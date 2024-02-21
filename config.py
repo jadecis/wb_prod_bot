@@ -9,3 +9,5 @@ PORT_DB=int(os.getenv("PORT_DB"))
 PASS_DB=os.getenv("PASS_DB")
 USER_DB=os.getenv("USER_DB")
 NAME_DB=os.getenv("NAME_DB")
+
+SUB_NAME_BOT= "@SaleWave_bot"
