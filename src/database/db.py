@@ -1,5 +1,4 @@
 import pymysql
-import asyncio
 
 class Database():
     def __init__(self, host, port, password, name, user):
@@ -14,13 +13,13 @@ class Database():
         self.connection.autocommit(True)
         
         
-    async def check_subscribe(self, user_id):
+    def check_subscribe(self, user_id):
         self.connection.ping()
         with self.connection.cursor() as cur:
             cur.execute("SELECT * FROM subscribers WHERE user_id=%s", (user_id, ))
             return cur.fetchone()
         
-    async def get_user_settings(self, user_id):
+    def get_user_settings(self, user_id):
         self.connection.ping()
         with self.connection.cursor() as cur:
             cur.execute("""SELECT 
@@ -32,7 +31,7 @@ class Database():
             return cur.fetchone()
         
         
-    async def get_gds(self, query, page):
+    def get_gds(self, query, page):
         self.connection.ping()
         with self.connection.cursor() as cur:
             try:
@@ -44,18 +43,18 @@ class Database():
             except: 
                 return False
     
-    async def get_catalog_ids(self):
+    def get_catalog_ids(self):
         self.connection.ping()
         with self.connection.cursor() as cur:
             cur.execute(f"SELECT wb_id FROM catalog")
             return cur.fetchall()
         
-    async def set_page(self, user_id):
+    def set_page(self, user_id):
         self.connection.ping()
         with self.connection.cursor() as cur:
             cur.execute(f"UPDATE setting_users SET page=1 WHERE user_id=%s", (user_id, ))
             
-    async def user_launch(self, user_id=None):
+    def user_launch(self, user_id=None):
         self.connection.ping()
         with self.connection.cursor() as cur:
             if user_id:

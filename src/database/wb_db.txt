@@ -1,0 +1,61 @@
+CREATE TABLE `catalog` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `wb_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+CREATE TABLE `cat_users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` bigint DEFAULT NULL,
+  `cats` json DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id_UNIQUE` (`user_id`)
+) 
+CREATE TABLE `sales` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `xs` int DEFAULT NULL,
+  `ys` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+CREATE TABLE `remain` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `value` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+CREATE TABLE `gmt` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `value` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+CREATE TABLE `subscribers` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` bigint DEFAULT NULL,
+  `date` timestamp NULL DEFAULT NULL,
+  `launch` tinyint DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id_UNIQUE` (`user_id`)
+)
+CREATE TABLE `setting_users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` bigint DEFAULT NULL,
+  `size_sale` int DEFAULT '1',
+  `stock` int DEFAULT '1',
+  `market` int DEFAULT '1',
+  `gmt` int DEFAULT '2',
+  `remaining` int DEFAULT '1',
+  `page` int DEFAULT '0',
+  `email` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id_UNIQUE` (`user_id`)
+) 
+CREATE TABLE `tariffs` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `period` int DEFAULT NULL,
+  `price` int DEFAULT NULL,
+  `description` text,
+  PRIMARY KEY (`id`)
+)

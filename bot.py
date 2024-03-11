@@ -1,4 +1,4 @@
-from loader import aioDB, bot, dp
+from loader import db, bot, dp
 from src.database.aioconnection import loop
 from aiogram.types import BotCommand
 from src.commands import start_comm
@@ -15,13 +15,13 @@ async def main():
         BotCommand(command= "start", description="restart bot"),
     ])
     
-    await aioDB.user_launch()
+    await db.user_launch()
     
     dp.include_router(start_comm.router)
     
     print("Bot is running")
     await dp.start_polling(bot)
     
-    
 if __name__ == '__main__':
+    # asyncio.run(main())
     loop.run_until_complete(main())

@@ -1,5 +1,5 @@
 
-from loader import aioDB
+from loader import db
 from PIL import Image, ImageDraw, ImageFont
 from config import SUB_NAME_BOT
 import aiohttp
@@ -9,14 +9,19 @@ import logging
 
 
 
-async def create_query(rm_cat, xs, ys, value):
-    res= await aioDB.get_catalog_ids()
+async def create_query(rm_cat, sale, value):
+    res= await db.get_catalog_ids()
     rm_cat.append(0)
+    sale_inf= await db.get_inf_sale(sale)
+    sale_list= []
+    for i in sale_inf:
+        for j in range(i['xs'], i['ys']+1):
+            sale_list.append(j)
     sqlquery=""
     for i in res:
         if i["wb_id"] not in rm_cat:
             sqlquery+=f"SELECT name, prod_id, cur_price, sale, value, date_up FROM wbProducts_db.cat{i['wb_id']}\n "\
-                f"WHERE sale BETWEEN {xs} and {ys} and value >= {value}\n UNION\n"
+                f"WHERE sale IN {tuple(sale_list)} and value >= {value}\n UNION\n"
     
     return sqlquery[:-6] if len(sqlquery) > 10 else False 
 
@@ -48,8 +53,12 @@ async def get_img_url(prod_id):
         basket = '11'
     elif 1656 <= short_id <= 1919:
         basket = '12'
-    else:
+    elif 1920 <= short_id <= 2045:
         basket = '13'
+    elif 2046 <= short_id <= 2189:
+        basket = '14'
+    else:
+        basket = '15'
 
     url= f"https://basket-{basket}.wbbasket.ru/vol{short_id}/part{prod_id // 1000}/{prod_id}/images/big/1.webp"
     
@@ -61,7 +70,7 @@ async def get_img(user_id, prod_id):
             async with session.get(await get_img_url(prod_id)) as response:
                 with open(f'src/images/download/{user_id}{prod_id}.png', 'wb') as f:
                     f.write(await response.read())
-        await asyncio.sleep(1)
+        await asyncio.sleep(2)
     
         res= await watermark_img(f'{user_id}{prod_id}.png', SUB_NAME_BOT)
         return res

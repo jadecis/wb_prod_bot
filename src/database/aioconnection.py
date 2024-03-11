@@ -13,7 +13,6 @@ async def connect():
         password=PASS_DB,
         db=NAME_DB,
         autocommit=True,
-        pool_recycle=100,
         loop=loop
     )
 
